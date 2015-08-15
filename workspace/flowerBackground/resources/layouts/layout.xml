@@ -1,5 +1,5 @@
-<layout id="MainLayout">
-    <label id="TimeLabel" x="center" y="170" font="Gfx.FONT_LARGE" justification="Gfx.TEXT_JUSTIFY_CENTER" color="Gfx.COLOR_WHITE"></label>
+<layout id="WatchFace">
+     <label id="TimeLabel" x="center" y="170" font="Gfx.FONT_LARGE" justification="Gfx.TEXT_JUSTIFY_CENTER" color="Gfx.COLOR_WHITE"></label>
 	<label color="Gfx.COLOR_WHITE" font="Gfx.FONT_TINY" x="100"
 		y="25" justification="Gfx.TEXT_JUSTIFY_CENTER" id="DateLabel">
 	</label>

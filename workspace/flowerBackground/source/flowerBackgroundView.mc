@@ -5,13 +5,12 @@ using Toybox.Lang as Lang;
 using Toybox.Time as Time;
 using Toybox.Time.Gregorian as Gregorian;
 using Toybox.Application as App;
-
-class flowerKeyView extends Ui.View {
+class flowerBackgroundView extends Ui.WatchFace {
     var bitmap;
     var imgHistory={};
     var count;
     var images;
-    var color= Gfx.COLOR_BLACK;
+    var showing=null;
 
 
 	function rand(min, max){
@@ -23,13 +22,17 @@ class flowerKeyView extends Ui.View {
     //! Load your resources here
     function onLayout(dc) {
     //Sys.println(Time.now().value()+" time ");
-    setLayout(Rez.Layouts.MainLayout(dc));
+    setLayout(Rez.Layouts.WatchFace(dc));
 
     }
     
     function setLoop(val){
-    	if(val>=count){
+    	if(val>count){
     		val=val-count;
+    		val=setLoop(val);
+    	}
+    	else if(val<1){
+    		val=count+val;
     		val=setLoop(val);
     	}
     	return val;
@@ -37,44 +40,44 @@ class flowerKeyView extends Ui.View {
     
     
     function setupImages(){
-      	images = [ 	Rez.Drawables.flower01,
-                 	Rez.Drawables.flower02,
-                 	Rez.Drawables.flower03,
-                 	Rez.Drawables.flower04,
-                 	Rez.Drawables.flower05,
-                 	Rez.Drawables.flower06,
-                 	Rez.Drawables.flower07,
-                 	Rez.Drawables.flower08,
-                 	Rez.Drawables.flower09,
-                 	Rez.Drawables.flower10,
-                 	Rez.Drawables.flower11,
-                 	Rez.Drawables.flower12,
-                 	Rez.Drawables.flower13,
-                 	Rez.Drawables.flower14,
-                 	Rez.Drawables.flower15,
-                 	Rez.Drawables.flower16,
-                 	Rez.Drawables.flower17,
-                 	Rez.Drawables.flower18,
-                 	Rez.Drawables.flower19,
-                 	Rez.Drawables.flower20,
-                 	Rez.Drawables.flower21,
-                 	Rez.Drawables.flower22,
-                 	Rez.Drawables.flower23,
-                 	Rez.Drawables.flower24,
-                 	Rez.Drawables.flower25,
-                 	Rez.Drawables.flower26,
-                 	Rez.Drawables.flower27,
-                 	Rez.Drawables.flower28,
-                 	Rez.Drawables.flower29];
+      	images = [ 	Rez.Drawables.image01,
+                 	Rez.Drawables.image02,
+                 	Rez.Drawables.image03,
+                 	Rez.Drawables.image04,
+                 	Rez.Drawables.image05,
+                 	Rez.Drawables.image06,
+                 	Rez.Drawables.image07,
+                 	Rez.Drawables.image08,
+                 	Rez.Drawables.image09,
+                 	Rez.Drawables.image10,
+                 	Rez.Drawables.image11,
+                 	Rez.Drawables.image12,
+                 	Rez.Drawables.image13,
+                 	Rez.Drawables.image14,
+                 	Rez.Drawables.image15,
+                 	Rez.Drawables.image16,
+                 	Rez.Drawables.image17,
+                 	Rez.Drawables.image18,
+                 	Rez.Drawables.image19,
+                 	Rez.Drawables.image20,
+                 	Rez.Drawables.image21,
+                 	Rez.Drawables.image22,
+                 	Rez.Drawables.image23,
+                 	Rez.Drawables.image24,
+                 	Rez.Drawables.image25,
+                 	Rez.Drawables.image26,
+                 	Rez.Drawables.image27,
+                 	Rez.Drawables.image28,
+                 	Rez.Drawables.image29];
     	count=images.size();
         //Sys.println(imgHistory);
                  
     }
     
     function setupImgHistory(){
-    	imgHistory["showing"]=null;
     	//if(!imgHistory.hasKey("main")){
         	imgHistory["main"]=rand(0,count-1);
+        	imgHistory["onHour"]=setLoop(imgHistory["main"]+count/2);
         	imgHistory["changed"]=Time.now().value();
        // }
     }
@@ -89,27 +92,26 @@ class flowerKeyView extends Ui.View {
     	var secondsForceChange=Gregorian.SECONDS_PER_HOUR*18;
     	if((changesOnHours.hasKey(clockTime.hour)) && (secondsSinceLastChange>secondsMinChange)){
     	//if((clockTime.min%3==0) && (secondsSinceLastChange>secondsMinChange)){
-    		setNextImage(true);
+    		setNextImage();
     	}
     	else if(secondsSinceLastChange>secondsForceChange){
-    		setNextImage(true);
+    		setNextImage();
     	}
     }
     
-    function setNextImage(changeTime){
-		
+    function setNextImage(){
+
         imgHistory["main"]=setLoop(imgHistory["main"]+1);
-        if(changeTime){
-        	imgHistory["changed"]=Time.now().value();
-        }
-        Sys.println("changing "+imgHistory+" "+changeTime);
+        imgHistory["onHour"]=setLoop(imgHistory["onHour"]+1);
+        imgHistory["changed"]=Time.now().value();
+        Sys.println("changing "+imgHistory);
     }
     
     function requestState(clockTime){
     var limit=5;
      if(clockTime.min%60<limit){
  //     Sys.println("onHour");
-        	return setLoop(imgHistory["main"]+count/2);
+        	return imgHistory["onHour"];
         }
     	else{
     	   //   Sys.println("main ");
@@ -121,13 +123,13 @@ class flowerKeyView extends Ui.View {
     //! the state of this View and prepare it to be shown. This includes
     //! loading resources into memory.
     function onShow() {
-            color=Toybox.Graphics.COLOR_PURPLE;
+       // App.getApp().setupHistory();
     }
     
     function drawBitmap(dc,clockTime){
     	var request=requestState(clockTime);
-    	if (request != imgHistory["showing"]){
-			imgHistory["showing"]=request;
+    	if (request != showing){
+			showing=request;
 			bitmap=null;
 			bitmap = Ui.loadResource(images[request]);
 		}
@@ -154,7 +156,7 @@ class flowerKeyView extends Ui.View {
         var dateString = time.month+" "+time.day.format("%02i");
 		var batteryString=Sys.getSystemStats().battery.format("%i")+"%";
 		
-		 dc.setColor(color, color);
+		 dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_BLACK);
 		fillRoundedRectangleFromCenter(dc,dc.getWidth()/2, 190, 86, 38, 5);
 		fillRoundedRectangleFromCenter(dc,dc.getWidth()/2, 32, 84, 22, 5);
 		fillRoundedRectangleFromCenter(dc,dc.getWidth()/2, 12, 45, 22, 5);
@@ -184,11 +186,11 @@ class flowerKeyView extends Ui.View {
     //! state of this View here. This includes freeing resources from
     //! memory.
     function onHide() {
+    	//App.getApp().saveHistory();
     }
 
     //! The user has just looked at their watch. Timers and animations may be started here.
     function onExitSleep() {
-        mView.color=Toybox.Graphics.COLOR_BLUE;
   
     }
 

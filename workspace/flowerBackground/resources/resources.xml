@@ -1,0 +1,36 @@
+<resources>
+    <string id="AppName">flowerBackground</string>
+
+    <bitmap id="LauncherIcon" filename="images/launcher_icon.png" />
+    <bitmap id="image01" filename="images/image01.jpg" />
+    <bitmap id="image02" filename="images/image02.jpg" />
+    <bitmap id="image03" filename="images/image03.jpg" />
+    <bitmap id="image04" filename="images/image04.jpg" />
+    <bitmap id="image05" filename="images/image05.jpg" />
+    <bitmap id="image06" filename="images/image06.jpg" />
+    <bitmap id="image07" filename="images/image07.jpg" />
+    <bitmap id="image08" filename="images/image08.jpg" />
+    <bitmap id="image09" filename="images/image09.jpg" />
+    <bitmap id="image10" filename="images/image10.jpg" />
+   
+    <bitmap id="image11" filename="images/image11.jpg" />
+    <bitmap id="image12" filename="images/image12.jpg" />
+    <bitmap id="image13" filename="images/image13.jpg" />
+    <bitmap id="image14" filename="images/image14.jpg" />
+    <bitmap id="image15" filename="images/image15.jpg" />
+    <bitmap id="image16" filename="images/image16.jpg" />
+    <bitmap id="image17" filename="images/image17.jpg" />
+    <bitmap id="image18" filename="images/image18.jpg" />
+    <bitmap id="image19" filename="images/image19.jpg" />
+    <bitmap id="image20" filename="images/image20.jpg" />
+    
+    <bitmap id="image21" filename="images/image21.jpg" />
+    <bitmap id="image22" filename="images/image22.jpg" />
+    <bitmap id="image23" filename="images/image23.jpg" />
+    <bitmap id="image24" filename="images/image24.jpg" />
+    <bitmap id="image25" filename="images/image25.jpg" />
+    <bitmap id="image26" filename="images/image26.jpg" />
+    <bitmap id="image27" filename="images/image27.jpg" />
+    <bitmap id="image28" filename="images/image28.jpg" />
+    <bitmap id="image29" filename="images/image29.jpg" />
+</resources>
